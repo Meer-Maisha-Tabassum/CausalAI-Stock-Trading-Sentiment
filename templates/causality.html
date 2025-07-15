@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo1.png') }}">
+    <title>Causality Analysis</title>
+    <link href="{{ url_for('static', filename='owl.carousel.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='owl.theme.default.min.css') }}" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='helper.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style-RES.css') }}" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body class="header-fix fix-sidebar">
+    <div id="main-wrapper">
+        <div class="header">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <div class="navbar-header">
+                    <a href="http://localhost/www/wordpress-5.6.2/wordpress/" class="menuzord-brand"><img src="{{url_for('static', filename='Logo1.png')}}" ></a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <li class="nav-item"> <a class="nav-link toggle-nav hidden-md-up text-muted" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item m-l-10"> <a class="nav-link sidebartoggle hidden-sm-down text-muted" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebar-menu">
+                        <li class="nav-devider"></li>
+                        <br>
+                        <li class="nav-label"><a href="/">HOME</a></li>
+                        <li class="nav-label"><a href="/prediction">PREDICT FUTURE STOCK</a></li>
+                        <li class="nav-label"><a href="/sentiment_analysis">SENTIMENT ANALYSIS</a></li>
+                        <li class="nav-label"><a href="/causality">CAUSAL AI</a></li>                        
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" id="callinsertintotable" placeholder="Search for stock symbol" aria-label="Search">
+                        <button class="btn btn-blue my-2 my-sm-0" type="button" id="submitBtn">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <h3 style="text-align: center; font-weight: bold;">Causal Analysis for {{ quote }}</h3>
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="card bg-warning p-20">
+                            <div class="card-title" id="causal-text" style="text-align: center;">
+                                <h4>Granger Causality Matrix OF {{ quote }} STOCK</h4>
+                            </div>
+                            <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
+                                <div class="table-responsive" style="margin: 0">
+                                    <table class="table" style="margin: 0 auto;">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="4" style="text-align: center;">
+                                                    <div class="granger_causation_matrix">
+                                                        {{ granger_results_html|safe }}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <style>
+                                    .row {
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                    }
+                                    .col-lg-6 {
+                                        display: flex;
+                                        flex: 1;
+                                    }
+                                    .card {
+                                        display: flex;
+                                        flex-direction: column;
+                                        width: 100%;
+                                    }
+                                    .card-body, .team-chart {
+                                        flex: 1;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">                            
+                            <div class="team-chart" id="plotly-granger-graph-container" style="display: flex; justify-content: center; align-items: center; margin: 0 auto;">
+                                {{granger_graph_html | safe}}
+                            </div>                                                                                
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-title" style="text-align: center;">
+                                <h4>DOWHY CAUSAL MODEL DIAGRAM SHOWING CAUSAL RELATIONSHIPS BETWEEN INDICATORS</h4>
+                            </div>
+                            <div class="diagram-chart" style="display: flex; justify-content: center; align-items: center;">
+                                <img id="causal-model-image" src="{{ url_for('static', filename='causal_model.png') }}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-success p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right" style="text-align: center;">
+                                    <h3 class="color-white text-white" id="causal-estimate-regression">Causal effect estimate(linear regression): {{ causal_estimate_regression }}</h3>
+                                    <p class="m-b-0 text-white" id="causal-estimate-regression-p">Explanation: This estimate suggests that, according to the linear regression method, the treatment (<strong>[RSI]</strong>) has a <strong>{{ causal_estimate_regression_pos_neg }}</strong> causal effect on the outcome (<strong>[CLOSE]</strong>). Specifically, a one-unit increase in <strong>[RSI]</strong> is associated with an average <strong>{{ causal_estimate_regression_increase_decrease }}</strong> of approximately <strong>{{ causal_estimate_regression }}</strong> units in <strong>[CLOSE]</strong>, holding other common causes constant.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-success p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right causal_results" style="text-align: center;">
+                                    <h3 class="color-white text-white" id="causal-estimate-iv">Causal effect estimate(instrumental variable): {{ causal_estimate_iv }}</h3>
+                                    <p class="m-b-0 text-white" id="causal-estimate-iv-p">Explanation: This estimate, derived from the instrumental variable method, indicates that the treatment (<strong>[RSI]</strong>) has a <strong>{{ causal_estimate_iv_pos_neg }}</strong> causal effect on the outcome (<strong>[CLOSE]</strong>). Here, a one-unit increase in <strong>[RSI]</strong> is associated with an average <strong>{{ causal_estimate_iv_increase_decrease }}</strong> of approximately <strong>{{ causal_estimate_iv }}</strong> units in <strong>[CLOSE]</strong>, when using <strong>[VOLUME]</strong> as an instrument.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                const symbolInput = document.getElementById('callinsertintotable');
+                if (!symbolInput) {
+                    console.error("Symbol input element not found.");
+                    return;
+                }
+                const symbol = symbolInput.value;            
+
+                fetch('/insertintotable', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ symbol: symbol }),
+                })
+                .then(response => response.json())
+                .then(data => {                            
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    // Update text contains
+                    
+                    updateTextContent('causal-text', `Granger Causality Matrix OF ${data.quote} STOCK`, 'quote');
+                    
+                    removeGraph('causal-model-image')
+
+
+                    // Render the Plotly graph            
+
+                    const causalModelImage = document.getElementById('causal-model-image');
+                    if (causalModelImage) {
+                        const imagePath = "{{ url_for('static', filename='causal_model.png') }}" + "?t=" + new Date().getTime();
+                        console.log("Image path received:", imagePath);
+                        causalModelImage.src = imagePath;
+                    } else {
+                        console.error("Image element with id 'causal-model-image' not found in the DOM");
+                        alert("Image element with id 'causal-model-image' not found in the DOM");
+                    }    
+
+                    // Update causal results
+                    updateInnerHTML('.granger_causation_matrix', data.granger_results_html, 'granger_results_html');
+                    updateInnerHTML('#causal-estimate-regression', `Causal effect estimate (linear regression): ${data.causal_estimate_regression}`, 'causal_estimate_regression')
+                    updateInnerHTML('#causal-estimate-regression-p', `Explanation: This estimate suggests that, according to the linear regression method, the treatment (<strong>[RSI]</strong>) has a <strong>${data.causal_estimate_regression_pos_neg}</strong> causal effect on the outcome (<strong>[CLOSE]</strong>). Specifically, a one-unit increase in <strong>[RSI]</strong> is associated with an average <strong>${data.causal_estimate_regression_increase_decrease}</strong> of approximately <strong>${data.causal_estimate_regression}</strong> units in <strong>[CLOSE]</strong>, holding other common causes constant.`, 'causal_estimate_regression')
+                    updateInnerHTML('#causal-estimate-iv', `Causal effect estimate (instrumental variable): ${data.causal_estimate_iv}`, 'causal_estimate-iv')
+                    updateInnerHTML('#causal-estimate-iv-p', `Explanation: This estimate, derived from the instrumental variable method, indicates that the treatment (<strong>[RSI]</strong>) has a <strong>${data.causal_estimate_iv_pos_neg}</strong> causal effect on the outcome (<strong>[CLOSE]</strong>). Here, a one-unit increase in <strong>[RSI]</strong> is associated with an average <strong>${data.causal_estimate_iv_increase_decrease}</strong> of approximately <strong>${data.causal_estimate_iv}</strong> units in <strong>[CLOSE]</strong>, when using <strong>[VOLUME]</strong> as an instrument.`, 'causal_estimate-iv')
+
+                    
+                    removeGraph(plotly-granger-graph-container)
+                    Plotly.newPlot('plotly-granger-graph-container', JSON.parse(data.granger_graph_json).data, JSON.parse(data.granger_graph_json).layout);
+
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            });
+
+            function removeGraph(container) {
+                var container = document.getElementById(container);
+                container.innerHTML = ''; // This clears the content of the div
+            }
+
+            function updateTextContent(elementId, text, variableName) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = text;
+                } else {
+                    console.error(`Failed to find element with ID: ${elementId} for variable ${variableName}`);
+                }
+            }
+
+            function updateInnerHTML(selector, htmlContent, variableName) {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.innerHTML = htmlContent;
+                } else {
+                    console.error(`Failed to find element with selector: ${selector} for variable ${variableName}`);
+                }
+            }
+
+            function updateNewsHeadlinesTable(headlines) {
+                const tableBody = document.getElementById('news-headlines');
+                if (!tableBody) {
+                    console.error("No table body found for news headlines.");
+                    return;
+                }
+
+                if (!headlines || !Array.isArray(headlines) || headlines.length === 0) {
+                    console.error("Invalid or empty news headlines data:", headlines);
+                    tableBody.innerHTML = '<tr><td colspan="5">No news headlines available</td></tr>';
+                    return;
+                }
+
+                let rowsHtml = '';
+                headlines.forEach((headline, index) => {
+                    if (index < 10) {
+                        rowsHtml += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${headline}</td>
+                                <td><span></span></td>
+                                <td><span></span></td>
+                                <td><span class="badge badge-success"></span></td>
+                            </tr>`;
+                    }
+                });
+
+                tableBody.innerHTML = rowsHtml;
+            }
+
+            function updateForecastTable(selector, forecastSet, variableName) {
+                const tableBody = document.querySelector(selector);
+                if (!tableBody) {
+                    console.error(`No table body found for selector: ${selector} for variable ${variableName}`);
+                    return;
+                }
+
+                if (!forecastSet || !Array.isArray(forecastSet) || forecastSet.length === 0) {
+                    console.error(`Invalid or empty forecast data for variable ${variableName}:`, forecastSet);
+                    tableBody.innerHTML = '<tr><td colspan="2">No data available</td></tr>'; // Show a message in the table if no data
+                    return;
+                }
+
+                let rowsHtml = '';
+                forecastSet.forEach((price, index) => {
+                    rowsHtml += `<tr><td>${index + 1}</td><td>${price}</td></tr>`;
+                });
+
+                tableBody.innerHTML = rowsHtml;
+            }
+
+            function formatCausalResults(causalResults) {
+                if (!causalResults) {
+                    return '<pre>No causal results available</pre>';
+                }
+
+                let resultHtml = '<table class="table table-bordered"><tbody>';
+                for (const [key, value] of Object.entries(causalResults)) {
+                    resultHtml += `<tr><th colspan="2">${key}</th></tr>`;
+                    for (const [subKey, subValue] of Object.entries(value)) {
+                        resultHtml += `<tr><td>${subKey}</td><td>${JSON.stringify(subValue)}</td></tr>`;
+                    }
+                }
+                resultHtml += '</tbody></table>';
+
+                return resultHtml;
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

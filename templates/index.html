@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo1.png') }}">
+    <title>Causal Stock Trading</title>
+    <link href="{{ url_for('static', filename='owl.carousel.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='owl.theme.default.min.css') }}" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='helper.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style-RES.css') }}" rel="stylesheet">
+    <style>
+        .diagram-chart img {
+            max-width: 100%;
+            height: auto;
+            visibility: visible;
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+
+        
+    </style>
+</head>
+
+<body class="header-fix fix-sidebar">
+    <div id="main-wrapper">
+        <div class="header">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <div class="navbar-header">
+                    <a class="menuzord-brand"><img src="{{url_for('static', filename='Logo1.png')}}" ></a>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 header-content">
+                        <h2 style="text-align: center; font-weight: bold;">Causal Stock Trading</h2>
+                    </div>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <li class="nav-item"> <a class="nav-link toggle-nav hidden-md-up text-muted" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item m-l-10"> <a class="nav-link sidebartoggle hidden-sm-down text-muted" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+
+        <div class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebar-menu">
+                        <li class="nav-devider"></li>
+                        <br>
+                        <li class="nav-label"><a href="/">HOME</a></li>
+                        <li class="nav-label"><a href="/prediction">PREDICT FUTURE STOCK</a></li>
+                        <li class="nav-label"><a href="/sentiment_analysis">SENTIMENT ANALYSIS</a></li>
+                        <li class="nav-label"><a href="/causality">CAUSAL AI</a></li>                        
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" id="callinsertintotable" placeholder="Search for stock symbol" aria-label="Search">
+                        <button class="btn btn-blue my-2 my-sm-0" type="button" id="submitBtn">Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                
+                <div class="row justify-content-center">
+
+                    <div class="col-md-6">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right" style="text-align: center;">
+                                    <h2 class="color-white text-white" style="text-align: center; font-weight: bold;" id="causal-estimate-regression">Get Familiar With Causal AI</h2>
+                                    <p class="m-b-0 text-white" id="causal-estimate-regression-p">Focuses on understanding and learning cause and effect relationships within data. Causal AI uncovers the 'why' behind AI, like when AI predicts a stock price increase, Causal AI examines the factors influencing this increase—why it’s happening. This enables users to analyze crucial factors that generative AI overlooks. Explainable AI strives for transparency in AI decision-making via predictive models, but it doesn't clarify the influencing factors or the 'why' behind predictions, whereas, Causal AI does.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card bg-warning p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right" style="text-align: center;">
+                                    <h2 class="color-white text-white" style="text-align: center; font-weight: bold;" id="causal-estimate-regression">Get Familiar With the Application</h2>
+                                    <p class="m-b-0 text-white" id="causal-estimate-regression-p">A platform that leverages advanced AI techniques to optimize trading strategies. It features a trained time-series forecasting model that uses historical stock market data and implements Causal AI graphs to reveal underlying relationships between market factors. The app integrates real-time stock data and sentiment analysis from news sources to generate precise buy/sell signals. To experience the complete features of this application, <strong>search for a stock symbol in the search bar above</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> 
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const symbol = document.getElementById('callinsertintotable').value;
+            if (symbol) {
+                window.location.href = `/prediction?symbol=${symbol}`;
+            }
+        });
+    </script>
+</body>
+
+</html>

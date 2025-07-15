@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo1.png') }}">
+    <title>Prediction Results</title>
+    <link href="{{ url_for('static', filename='owl.carousel.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='owl.theme.default.min.css') }}" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='helper.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style-RES.css') }}" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+   
+</head>
+
+<body class="header-fix fix-sidebar">
+    <div id="main-wrapper">
+        <div class="header">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <div class="navbar-header">
+                    <a href="http://localhost/www/wordpress-5.6.2/wordpress/" class="menuzord-brand"><img src="{{url_for('static', filename='Logo1.png')}}" ></a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <li class="nav-item"> <a class="nav-link toggle-nav hidden-md-up text-muted" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item m-l-10"> <a class="nav-link sidebartoggle hidden-sm-down text-muted" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebar-menu">
+                        <li class="nav-devider"></li>
+                        <br>
+                        <li class="nav-label"><a href="/">HOME</a></li>
+                        <li class="nav-label"><a href="/prediction">PREDICT FUTURE STOCK</a></li>
+                        <li class="nav-label"><a href="/sentiment_analysis">SENTIMENT ANALYSIS</a></li>
+                        <li class="nav-label"><a href="/causality">CAUSAL AI</a></li>                        
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" id="callinsertintotable" placeholder="Search for stock symbol" aria-label="Search">
+                        <button class="btn btn-blue my-2 my-sm-0" type="button" id="submitBtn">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <h3 style="text-align: center; font-weight: bold;">Prediction Results for {{ quote }}</h3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-bag f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="open-value">{{ open }}</h2>
+                                    <p class="m-b-0 text-white">OPEN</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-warning p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="high-value">{{ high }}</h2>
+                                    <p class="m-b-0 text-white">HIGH</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-success p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-vector f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="low-value">{{ low }}</h2>
+                                    <p class="m-b-0 text-white">LOW</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-danger p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="close-value">{{ close }}</h2>
+                                    <p class="m-b-0 text-white">CLOSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-warning p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="adj-close-value">{{ adj_close }}</h2>
+                                    <p class="m-b-0 text-white">ADJ CLOSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-bag f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="volume-value">{{ volume }}</h2>
+                                    <p class="m-b-0 text-white">VOLUME</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="progress" style="display:none;" id="loadingProgressBar">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4 style="text-align: center;">RECENT TRENDS IN {{ quote }} STOCK PRICES</h4>
+                            </div>
+                            <div class="sales-chart" id="plotly-trend-graph-container">
+                                {{trend_graph_html | safe}}
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4 style="text-align: center;">ARIMA MODEL PREDICTION</h4>
+                            </div>
+                            <div class="sales-chart" id="plotly-arima-graph-container">
+                                {{arima_graph_html | safe}}
+                            </div>                        
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4 style="text-align: center;">LSTM MODEL PREDICTION</h4>
+                            </div>
+                            <div class="team-chart" id="plotly-lstm-graph-container">
+                                {{lstm_graph_html | safe}}
+                            </div>                                                                                
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4 style="text-align: center;">LINEAR REGRESSION MODEL PREDICTION</h4>
+                            </div>
+                            <div class="team-chart" id="plotly-lr-graph-container">
+                                {{lr_graph_html | safe}}
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card bg-success p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-vector f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="arima-pred">{{ arima_pred }}</h2>
+                                    <p class="m-b-0 text-white" id="arima-text">TOMORROW'S {{ quote }} CLOSING PRICE BY ARIMA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-warning p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="lstm-pred">{{ lstm_pred }}</h2>
+                                    <p class="m-b-0 text-white" id="lstm-text">TOMORROW'S {{ quote }} CLOSING PRICE BY LSTM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-danger p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-location f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="lr-pred">{{ lr_pred }}</h2>
+                                    <p class="m-b-0 text-white" id="lr-text">TOMORROW'S {{ quote }} CLOSING PRICE BY LINEAR REGRESSION</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-vector f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="error-arima">{{ error_arima }}</h2>
+                                    <p class="m-b-0 text-white">ARIMA RMSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="error-lstm">{{ error_lstm }}</h2>
+                                    <p class="m-b-0 text-white">LSTM RMSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="error-lr">{{ error_lr }}</h2>
+                                    <p class="m-b-0 text-white">LINEAR REGRESSION RMSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-dark p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-vector f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="mae-arima">{{ mae_arima }}</h2>
+                                    <p class="m-b-0 text-white">ARIMA MAE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-dark p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="mae-lstm">{{ mae_lstm }}</h2>
+                                    <p class="m-b-0 text-white">LSTM MAE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-dark p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="mae-lr">{{ mae_lr }}</h2>
+                                    <p class="m-b-0 text-white">LINEAR REGRESSION MAE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-title" id="arima-pred-text">
+                                <h4 style="text-align: center;">PREDICTED {{ quote }} PRICE FOR THE NEXT 7 DAYS WITH ARIMA</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="arima-forecast">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Close</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for price in forecast_set_arima %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ price }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-title" id="lstm-pred-text">
+                                <h4 style="text-align: center;">PREDICTED {{ quote }} PRICE FOR THE NEXT 7 DAYS WITH LSTM</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="lstm-forecast">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Close</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for price in forecast_set_lstm %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ price }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-title" id="lr-pred-text">
+                                <h4 style="text-align: center;">PREDICTED {{ quote }} PRICE FOR THE NEXT 7 DAYS WITH LINEAR REGRESSION</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="lr-forecast">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Close</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for price in forecast_set_lr %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ price }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                const symbolInput = document.getElementById('callinsertintotable');
+                if (!symbolInput) {
+                    console.error("Symbol input element not found.");
+                    return;
+                }
+                const symbol = symbolInput.value;
+
+                fetch('/insertintotable', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ symbol: symbol }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Received data:', data);  // Debugging to see received data
+
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    // Update text contains
+                    updateTextContent('today-stock-data', `TODAY'S ${data.quote} STOCK DATA`, 'quote');
+                    updateTextContent('open-value', data.open, 'open');
+                    updateTextContent('high-value', data.high, 'high');
+                    updateTextContent('low-value', data.low, 'low');
+                    updateTextContent('close-value', data.close, 'close');
+                    updateTextContent('adj-close-value', data.adj_close, 'adj_close');
+                    updateTextContent('volume-value', data.volume, 'volume');
+                    updateTextContent('arima-text', `TOMORROW'S ${data.quote} CLOSING PRICE BY ARIMA`, 'quote');
+                    updateTextContent('lstm-text', `TOMORROW'S ${data.quote} CLOSING PRICE BY LSTM`, 'quote');
+                    updateTextContent('lr-text', `TOMORROW'S ${data.quote} CLOSING PRICE BY LINEAR REGRESSION`, 'quote');
+                    updateTextContent('arima-pred-text', `PREDICTED ${data.quote} PRICE FOR THE NEXT 7 DAYS WITH ARIMA`, 'quote');
+                    updateTextContent('lstm-pred-text', `PREDICTED ${data.quote} PRICE FOR THE NEXT 7 DAYS WITH LSTM`, 'quote');
+                    updateTextContent('lr-pred-text', `PREDICTED ${data.quote} PRICE FOR THE NEXT 7 DAYS WITH LINEAR REGRESSION`, 'quote');
+                    updateTextContent('causal-text', `Granger Causality Matrix OF ${data.quote} STOCK`, 'quote');
+
+                    removeGraph('plotly-trend-graph-container');
+                    removeGraph('plotly-arima-graph-container');
+                    removeGraph('plotly-lstm-graph-container');
+                    removeGraph('plotly-lr-graph-container');
+
+                    // Render the Plotly graph
+                    Plotly.newPlot('plotly-trend-graph-container', JSON.parse(data.trend_graph_json).data, JSON.parse(data.trend_graph_json).layout);
+                    Plotly.newPlot('plotly-arima-graph-container', JSON.parse(data.arima_graph_json).data, JSON.parse(data.arima_graph_json).layout);
+                    Plotly.newPlot('plotly-lstm-graph-container', JSON.parse(data.lstm_graph_json).data, JSON.parse(data.lstm_graph_json).layout);
+                    Plotly.newPlot('plotly-lr-graph-container', JSON.parse(data.lr_graph_json).data, JSON.parse(data.lr_graph_json).layout);
+                    
+
+
+                    // Update predictions
+                    updateTextContent('arima-pred', data.arima_pred, 'arima_pred');
+                    updateTextContent('lstm-pred', data.lstm_pred, 'lstm_pred');
+                    updateTextContent('lr-pred', data.lr_pred, 'lr_pred');
+
+                    // Update errors
+                    updateTextContent('error-arima', data.error_arima, 'error_arima');
+                    updateTextContent('error-lstm', data.error_lstm, 'error_lstm');
+                    updateTextContent('error-lr', data.error_lr, 'error_lr');
+
+                    // Update MAEs
+                    updateTextContent('mae-arima', data.mae_arima, 'mae_arima');
+                    updateTextContent('mae-lstm', data.mae_lstm, 'mae_lstm');
+                    updateTextContent('mae-lr', data.mae_lr, 'mae_lr');
+
+                    // Update recommendation
+                    updateTextContent('idea-decision', `According to the ML Predictions & Sentiment Analysis of the News, a ${data.idea} in ${data.quote} stock is expected => ${data.decision}`, 'idea-decision');
+
+                    // Update forecasts
+                    updateForecastTable('#arima-forecast tbody', data.forecast_set_arima, 'forecast_set_arima');
+                    updateForecastTable('#lstm-forecast tbody', data.forecast_set_lstm, 'forecast_set_lstm');
+                    updateForecastTable('#lr-forecast tbody', data.forecast_set_lr, 'forecast_set_lr');    
+
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            });
+
+            function updateTextContent(elementId, text, variableName) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = text;
+                } else {
+                    console.error(`Failed to find element with ID: ${elementId} for variable ${variableName}`);
+                }
+            }
+            function removeGraph(container) {
+                var container = document.getElementById(container);
+                container.innerHTML = ''; // This clears the content of the div
+            }        
+
+            function updateForecastTable(selector, forecastSet, variableName) {
+                const tableBody = document.querySelector(selector);
+                if (!tableBody) {
+                    console.error(`No table body found for selector: ${selector} for variable ${variableName}`);
+                    return;
+                }
+
+                if (!forecastSet || !Array.isArray(forecastSet) || forecastSet.length === 0) {
+                    console.error(`Invalid or empty forecast data for variable ${variableName}:`, forecastSet);
+                    tableBody.innerHTML = '<tr><td colspan="2">No data available</td></tr>'; // Show a message in the table if no data
+                    return;
+                }
+
+                let rowsHtml = '';
+                forecastSet.forEach((price, index) => {
+                    rowsHtml += `<tr><td>${index + 1}</td><td>${price}</td></tr>`;
+                });
+
+                tableBody.innerHTML = rowsHtml;
+            }
+        });
+
+    </script>
+</body>
+
+</html>

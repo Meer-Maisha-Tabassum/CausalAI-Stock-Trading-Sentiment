@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo1.png') }}">
+    <title>Sentiment Analysis</title>
+    <link href="{{ url_for('static', filename='owl.carousel.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='owl.theme.default.min.css') }}" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='helper.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style-RES.css') }}" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body class="header-fix fix-sidebar">
+    <div id="main-wrapper">
+        <div class="header">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <div class="navbar-header">
+                    <a href="http://localhost/www/wordpress-5.6.2/wordpress/" class="menuzord-brand"><img src="{{url_for('static', filename='Logo1.png')}}" ></a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <li class="nav-item"> <a class="nav-link toggle-nav hidden-md-up text-muted" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item m-l-10"> <a class="nav-link sidebartoggle hidden-sm-down text-muted" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebar-menu">
+                        <li class="nav-devider"></li>
+                        <br>
+                        <li class="nav-label"><a href="/">HOME</a></li>
+                        <li class="nav-label"><a href="/prediction">PREDICT FUTURE STOCK</a></li>
+                        <li class="nav-label"><a href="/sentiment_analysis">SENTIMENT ANALYSIS</a></li>
+                        <li class="nav-label"><a href="/causality">CAUSAL AI</a></li>                        
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="page-wrapper">
+            <div class="row page-titles">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" id="callinsertintotable" placeholder="Search for stock symbol" aria-label="Search">
+                        <button class="btn btn-blue my-2 my-sm-0" type="button" id="submitBtn">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <h3 style="text-align: center; font-weight: bold;">Sentiment Analysis for {{ quote }}</h3>
+                <div class="row">
+                    <div class="col-ig-12">
+                        <div class="card">
+                            <div class="card-title" style="text-align: center;">
+                                <h4 style="text-align: center;">RECENT NEWS ABOUT {{ quote }}</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody id="news-headlines">
+                                            <tr>
+                                                <td>
+                                                    <div class="round-img">
+                                                        <a href="https://finviz.com/quote.ashx?t="><img style="padding: 0px,0px,0px,0px;width:100px;height: 70px;" src="{{url_for('static', filename='Logo1.png')}}" alt=""></a>
+                                                    </div>
+                                                </td>
+                                                <td>{% for i in range(0,10) %}
+                                                {{news_headlines[i]}}<br>
+                                                {% endfor %}
+                                                </td>
+                                                <td><span></span></td>
+                                                <td><span></span></td>
+                                                <td><span class="badge badge-success"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-title" style="text-align: center;">
+                                <h4 style="text-align: center;">SENTIMENT ANALYSIS VISUALIZATION IN PIE CHART FOR {{ quote }} NEWS</h4>
+                            </div>
+                            <div class="sales-chart" id="plotly-sentiment-graph-container">
+                                {{sentiment_graph_html | safe}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card bg-success p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="polarity">{{ polarity }}</h2>
+                                    <p class="m-b-0 text-white">OVERALL NEWS POLARITY ACCORDING TO THE SENTIMENT ANALYSIS</p> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">  
+                                <div class="media-left media media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" id="idea-decision" style="text-align: left;">According to the ML Predictions & Sentiment Analysis of the News, a {{ idea }} in {{ quote }} stock is expected => {{ decision }}</h2>
+                                    <p class="m-b-0 text-white">RECOMMENDATION</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                const symbolInput = document.getElementById('callinsertintotable');
+                if (!symbolInput) {
+                    console.error("Symbol input element not found.");
+                    return;
+                }
+                const symbol = symbolInput.value;
+
+                fetch('/insertintotable', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ symbol: symbol }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Received data:', data);  // Debugging to see received data
+                    progressBarInner.style.width = '100%'; // Complete the progress 
+                    setTimeout(() => {
+                        progressBar.style.display = 'none'; // Hide the progress bar after a short delay
+                        progressBarInner.style.width = '0%'; // Reset progress for the next use
+                        progressBarInner.setAttribute('aria-valuenow', 0);
+                    }, 500);
+
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    // Update text contains
+
+
+                    removeGraph('plotly-sentiment-graph-container')
+
+                    // Render the Plotly graph                
+                    Plotly.newPlot('plotly-sentiment-graph-container', JSON.parse(data.sentiment_graph_json).data, JSON.parse(data.sentiment_graph_json).layout);            
+
+
+                    
+                    // Update news headlines
+                    updateNewsHeadlinesTable(data.news_headlines);            
+
+                    // Update News polarity
+                    updateTextContent('polarity', data.polarity, 'polarity');
+
+                    // Update recommendation
+                    updateTextContent('idea-decision', `According to the ML Predictions & Sentiment Analysis of the News, a ${data.idea} in ${data.quote} stock is expected => ${data.decision}`, 'idea-decision');                    
+
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            });
+
+            function removeGraph(container) {
+                var container = document.getElementById(container);
+                container.innerHTML = ''; // This clears the content of the div
+            }
+
+            function updateTextContent(elementId, text, variableName) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = text;
+                } else {
+                    console.error(`Failed to find element with ID: ${elementId} for variable ${variableName}`);
+                }
+            }
+
+            function updateInnerHTML(selector, htmlContent, variableName) {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.innerHTML = htmlContent;
+                } else {
+                    console.error(`Failed to find element with selector: ${selector} for variable ${variableName}`);
+                }
+            }
+
+            function updateNewsHeadlinesTable(headlines) {
+                const tableBody = document.getElementById('news-headlines');
+                if (!tableBody) {
+                    console.error("No table body found for news headlines.");
+                    return;
+                }
+
+                if (!headlines || !Array.isArray(headlines) || headlines.length === 0) {
+                    console.error("Invalid or empty news headlines data:", headlines);
+                    tableBody.innerHTML = '<tr><td colspan="5">No news headlines available</td></tr>'; // Show a message in the table if no data
+                    return;
+                }
+
+                let rowsHtml = '';
+                headlines.forEach((headline, index) => {
+                    if (index < 10) {
+                        rowsHtml += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${headline}</td>
+                                <td><span></span></td>
+                                <td><span></span></td>
+                                <td><span class="badge badge-success"></span></td>
+                            </tr>`;
+                    }
+                });
+
+                tableBody.innerHTML = rowsHtml;
+            }
+
+            function updateForecastTable(selector, forecastSet, variableName) {
+                const tableBody = document.querySelector(selector);
+                if (!tableBody) {
+                    console.error(`No table body found for selector: ${selector} for variable ${variableName}`);
+                    return;
+                }
+
+                if (!forecastSet || !Array.isArray(forecastSet) || forecastSet.length === 0) {
+                    console.error(`Invalid or empty forecast data for variable ${variableName}:`, forecastSet);
+                    tableBody.innerHTML = '<tr><td colspan="2">No data available</td></tr>'; // Show a message in the table if no data
+                    return;
+                }
+
+                let rowsHtml = '';
+                forecastSet.forEach((price, index) => {
+                    rowsHtml += `<tr><td>${index + 1}</td><td>${price}</td></tr>`;
+                });
+
+                tableBody.innerHTML = rowsHtml;
+            }
+
+            function formatCausalResults(causalResults) {
+                if (!causalResults) {
+                    return '<pre>No causal results available</pre>';
+                }
+
+                let resultHtml = '<table class="table table-bordered"><tbody>';
+                for (const [key, value] of Object.entries(causalResults)) {
+                    resultHtml += `<tr><th colspan="2">${key}</th></tr>`;
+                    for (const [subKey, subValue] of Object.entries(value)) {
+                        resultHtml += `<tr><td>${subKey}</td><td>${JSON.stringify(subValue)}</td></tr>`;
+                    }
+                }
+                resultHtml += '</tbody></table>';
+
+                return resultHtml;
+            }
+        });
+
+    </script>
+</body>
+
+</html>
