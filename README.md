@@ -120,11 +120,25 @@ The NLP component is critical for incorporating the influence of public percepti
 
 *(Replace these placeholder images with actual screenshots from your application.)*
 
-**1. Main Input Page**
+**1. Home Page UI**
+![Home Page](UI/Home%20Page%20UI.png)
 
-**2. Analysis Dashboard (Prediction & Sentiment)**
+**2. Prediction Dashboard**
+![Primary Prediction Dashboard](UI/Prediction%20Dashboard.png)  
 
-**3. Causal Inference Graph**
+![Secondary Prediction View](UI/Prediction%20Dashboard%202.png)  
+
+![Tertiary Prediction View](UI/Prediction%20Dashboard%203.png)  
+
+**3. Sentiment Analysis Dashboard**
+![Sentiment Overview](UI/Sentiment%20Analysis%201.png)  
+
+![Sentiment Details](UI/Sentiment%20Analysis%202.png)  
+
+**4. Causal Inference Graph**
+![Causal Graph 1](UI/Causality%201.png)  
+
+![Causal Graph 2](UI/Causality%202.png)  
 
 -----
 
