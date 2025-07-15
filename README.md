@@ -6,6 +6,19 @@ This project presents a sophisticated algorithmic trading framework that moves b
 
 -----
 
+## 📜 Table of Contents
+
+  * [Key Features](https://www.google.com/search?q=%23-key-features)
+  * [Tech Stack & Libraries](https://www.google.com/search?q=%23%EF%B8%8F-tech-stack--libraries)
+  * [Methodology & Workflow](https://www.google.com/search?q=%23%EF%B8%8F-methodology--workflow)
+  * [Natural Language Processing (NLP) Integration](https://www.google.com/search?q=%23%EF%B8%8F-natural-language-processing-nlp-integration)
+  * [Getting Started](https://www.google.com/search?q=%23-getting-started)
+  * [UI Screenshots](https://www.google.com/search?q=%23-ui-screenshots)
+  * [File Descriptions](https://www.google.com/search?q=%23-file-descriptions)
+  * [License](https://www.google.com/search?q=%23-license)
+
+-----
+
 ## 📋 Key Features
 
   * **Causal Inference Engine**: Utilizes the `DoWhy` library to build a formal causal graph, identifying the true drivers of stock price changes among various factors.
@@ -103,29 +116,41 @@ The NLP component is critical for incorporating the influence of public percepti
 
 -----
 
+## 🖼️ UI Screenshots
+
+*(Replace these placeholder images with actual screenshots from your application.)*
+
+**1. Main Input Page**
+
+**2. Analysis Dashboard (Prediction & Sentiment)**
+
+**3. Causal Inference Graph**
+
+-----
+
 ## 📁 File Descriptions
 
-| File                       | Description                                                                                                       |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `main.py`                  | The main Flask application file; serves the web interface and orchestrates the analysis pipeline.              |
-| `Get_Data.py`              | Fetches historical stock data from online sources like `yfinance`.                                 |
-| `Causal_Model.py`          | Implements the structural causal model using the `DoWhy` library to estimate and refute causal effects. |
-| `Granger_Causation.py`     | Performs Granger Causality tests to identify potential predictive relationships between time series. |
-| `News_Sentiment.py`        | Scrapes news headlines and performs sentiment analysis using NLTK VADER.                    |
-| `LSTM.py`                  | Contains the implementation of the LSTM deep learning model for price prediction.                        |
-| `Arima.py`                 | Implements the ARIMA time-series forecasting model.                                              |
-| `Linear_Regression.py`     | Implements the Linear Regression model using technical indicators as features.           |
-| `Recommendation.py`        | Synthesizes model predictions and sentiment scores to generate a final trading recommendation.  |
-| `ADF_Test.py`              | Contains functions to perform the Augmented Dickey-Fuller test for stationarity.              |
-| `ADLine.py`                | Calculates the Accumulation/Distribution Line (ADL) indicator.                                   |
-| `ADX.py`                   | Calculates the Average Directional Index (ADX) indicator.                                           |
-| `AroonOscillator.py`       | Calculates the Aroon Oscillator indicator.                                           |
-| `MACD.py`                  | Calculates the Moving Average Convergence Divergence (MACD) indicator.                         |
-| `OBV.py`                   | Calculates the On-Balance Volume (OBV) indicator.                                               |
-| `RSI.py`                   | Calculates the Relative Strength Index (RSI) indicator.                                         |
-| `StochasticOscillator.py`  | Calculates the Stochastic Oscillator (%K and %D) indicators.                |
-| `MSFT.csv`                 | Sample CSV data file for Microsoft stock.                                                          |
-| `defaultSymbol.csv`        | A CSV file containing a list of default stock symbols.                                         |
+| File                     | Description                                                                                                     |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `main.py`                | The main Flask application file; serves the web interface and orchestrates the analysis pipeline.            |
+| `Get_Data.py`            | Fetches historical stock data from online sources like `yfinance`.                               |
+| `Causal_Model.py`        | Implements the structural causal model using the `DoWhy` library to estimate and refute causal effects. |
+| `Granger_Causation.py`   | Performs Granger Causality tests to identify potential predictive relationships between time series. |
+| `News_Sentiment.py`      | Scrapes news headlines and performs sentiment analysis using NLTK VADER.                  |
+| `LSTM.py`                | Contains the implementation of the LSTM deep learning model for price prediction.                      |
+| `Arima.py`               | Implements the ARIMA time-series forecasting model.                                            |
+| `Linear_Regression.py`   | Implements the Linear Regression model using technical indicators as features.         |
+| `Recommendation.py`      | Synthesizes model predictions and sentiment scores to generate a final trading recommendation. |
+| `ADF_Test.py`            | Contains functions to perform the Augmented Dickey-Fuller test for stationarity.            |
+| `ADLine.py`              | Calculates the Accumulation/Distribution Line (ADL) indicator.                                 |
+| `ADX.py`                 | Calculates the Average Directional Index (ADX) indicator.                                         |
+| `AroonOscillator.py`     | Calculates the Aroon Oscillator indicator.                                         |
+| `MACD.py`                | Calculates the Moving Average Convergence Divergence (MACD) indicator.                       |
+| `OBV.py`                 | Calculates the On-Balance Volume (OBV) indicator.                                             |
+| `RSI.py`                 | Calculates the Relative Strength Index (RSI) indicator.                                       |
+| `StochasticOscillator.py`| Calculates the Stochastic Oscillator (%K and %D) indicators.              |
+| `MSFT.csv`               | Sample CSV data file for Microsoft stock.                                                        |
+| `defaultSymbol.csv`      | A CSV file containing a list of default stock symbols.                                       |
 
 -----
 
