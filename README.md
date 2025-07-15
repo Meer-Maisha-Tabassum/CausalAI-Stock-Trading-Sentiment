@@ -118,8 +118,6 @@ The NLP component is critical for incorporating the influence of public percepti
 
 ## 🖼️ UI Screenshots
 
-*(Replace these placeholder images with actual screenshots from your application.)*
-
 **1. Home Page UI**
 ![Home Page](UI/Home%20Page%20UI.png)
 
